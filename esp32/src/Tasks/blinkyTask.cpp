@@ -1,5 +1,4 @@
 #include "tasks.hpp"
-#include <Arduino.h>
 
 void blinkyTask(void *parameters)
 {

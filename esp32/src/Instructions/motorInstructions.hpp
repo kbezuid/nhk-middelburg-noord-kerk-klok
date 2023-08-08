@@ -1,0 +1,5 @@
+enum MotorInstruction
+{
+    Test,
+    Ring
+};
