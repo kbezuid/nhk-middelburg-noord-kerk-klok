@@ -7,12 +7,17 @@
 MotorsQueueManager *motorsQueueManager = new MotorsQueueManager();
 Settings *settings;
 String command;
-Input *directionSwitch = new Input(MOTORS_DIRECTION_SWITCH_PIN, MOTORS_DIRECTION_SWITCH_DEBOUNCE);
+Input *directionSwitch = new Input(MOTORS_DIRECTION_SWITCH_PIN, DEFAULT_DIR_SWITCH_DEBOUNCE);
 
 // Task Parameters
 RfTaskParams rfTaskParams;
 MotorsTaskParams motorsTaskParams;
 DirectionSwitchTaskParams directionSwitchTaskParams;
+
+void applySettings()
+{
+  directionSwitch->setDebounceTime(settings->directionSwitchDebounce);
+}
 
 void setup()
 {
@@ -36,6 +41,9 @@ void setup()
   motorsTaskParams.settings = settings;
 
   directionSwitchTaskParams.directionSwitch = directionSwitch;
+
+  applySettings();
+  commandHelp();
 
   // Create Tasks
   xTaskCreatePinnedToCore(blinkyTask, BLINKY_TASKNAME, BLINKY_HEAPSIZE, NULL, BLINKY_PRIORITY, NULL, BLINKY_CORE);
@@ -75,6 +83,7 @@ void loop()
     else if (command.indexOf(CMD_SET) >= 0)
     {
       commandSet(command, settings);
+      applySettings();
     }
     else
     {

@@ -39,6 +39,7 @@ void commandSettingsHelp()
     Serial.println(T_STEADY_CMD_KEY " - Time int miliseconds that the motors will be on for the steady cycles");
     Serial.println(STARTUP_CYCLE_COUNT_CMD_KEY " - Number of startup cycles");
     Serial.println(CYCLE_COUNT_CMD_KEY " - Number of total cycles");
+    Serial.println(DIR_SWITCH_DEBOUNCE_CMD_KEY " - Direction switch debounce time in miliseconds");
     Serial.println("Example: set " T_STARTUP_CMD_KEY " 1000");
     Serial.println("Multiple settings can be set at once by seperating them with a space");
     Serial.println("Example: set " T_STARTUP_CMD_KEY " 1000 " T_STEADY_CMD_KEY " 400");

@@ -13,6 +13,7 @@ void Settings::read()
     Tsteady = _preferences.getInt(T_STEADY_CMD_KEY, DEFAULT_T_STEADY);
     cycleCount = _preferences.getInt(CYCLE_COUNT_CMD_KEY, DEFAULT_CYCLE_COUNT);
     startupCycleCount = _preferences.getInt(STARTUP_CYCLE_COUNT_CMD_KEY, DEFAULT_STARTUP_CYCLE_COUNT);
+    directionSwitchDebounce = _preferences.getULong(DIR_SWITCH_DEBOUNCE_CMD_KEY, DEFAULT_DIR_SWITCH_DEBOUNCE);
     _preferences.end();
 }
 
@@ -23,6 +24,7 @@ void Settings::persist()
     _preferences.putInt(T_STEADY_CMD_KEY, Tsteady);
     _preferences.putInt(CYCLE_COUNT_CMD_KEY, cycleCount);
     _preferences.putInt(STARTUP_CYCLE_COUNT_CMD_KEY, startupCycleCount);
+    _preferences.putULong(DIR_SWITCH_DEBOUNCE_CMD_KEY, directionSwitchDebounce);
     _preferences.end();
 }
 
@@ -32,6 +34,7 @@ void Settings::print()
     Serial.println("Steady Time (" T_STEADY_CMD_KEY "): " + String(Tsteady) + " (ms)");
     Serial.println("Startup Cycle Count: (" STARTUP_CYCLE_COUNT_CMD_KEY "): " + String(startupCycleCount));
     Serial.println("Cycle Count: (" CYCLE_COUNT_CMD_KEY "): " + String(cycleCount));
+    Serial.println("Direction Switch Debounce : (" DIR_SWITCH_DEBOUNCE_CMD_KEY "): " + String(directionSwitchDebounce) + "(ms)");
 }
 
 void Settings::setByCmdKey(String cmdKey, String value)
@@ -51,6 +54,10 @@ void Settings::setByCmdKey(String cmdKey, String value)
     else if (cmdKey == CYCLE_COUNT_CMD_KEY)
     {
         cycleCount = value.toInt();
+    }
+    else if (cmdKey == DIR_SWITCH_DEBOUNCE_CMD_KEY)
+    {
+        directionSwitchDebounce = value.toInt();
     }
     else
     {

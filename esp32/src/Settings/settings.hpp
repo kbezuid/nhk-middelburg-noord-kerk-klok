@@ -9,6 +9,7 @@
 #define T_STEADY_CMD_KEY "tss"
 #define STARTUP_CYCLE_COUNT_CMD_KEY "sc"
 #define CYCLE_COUNT_CMD_KEY "c"
+#define DIR_SWITCH_DEBOUNCE_CMD_KEY "dsd"
 
 #include "../config.hpp"
 
@@ -22,6 +23,7 @@ public:
     int Tsteady;
     int startupCycleCount;
     int cycleCount;
+    unsigned long directionSwitchDebounce;
     Settings();
     void persist();
     void read();
