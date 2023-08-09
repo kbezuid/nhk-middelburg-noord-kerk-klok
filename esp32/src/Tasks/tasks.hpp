@@ -29,7 +29,7 @@ struct RfTaskParams
 
 // Motors Task
 #define MOTORS_TASKNAME "motors"
-#define MOTORS_HEAPSIZE 1024
+#define MOTORS_HEAPSIZE 2048
 #define MOTORS_CORE 1
 #define MOTORS_PRIORITY 1
 
