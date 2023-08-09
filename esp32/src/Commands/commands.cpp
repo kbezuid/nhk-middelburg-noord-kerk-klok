@@ -8,6 +8,7 @@ void commandHelp()
     Serial.println(CMD_SETH " - help for set command");
     Serial.println(CMD_SAVE " - save settings to memory");
     Serial.println(CMD_RESET " - reset settings to what is saved in memory");
+    Serial.println(CMD_TEST " - test bell motors by moving in both directions");
 }
 
 void commandPrintSettings(Settings *settings)
@@ -99,4 +100,10 @@ void commandSet(String command, Settings *settings)
     }
 
     settings->print();
+}
+
+void commandTest(MotorsQueueManager *motorsQueueManager)
+{
+    Serial.println("Testing motors...");
+    motorsQueueManager->sendTestInstruction();
 }

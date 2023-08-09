@@ -4,6 +4,7 @@
 #include "../Peripherals/input.hpp"
 #include "../Peripherals/motorRelays.hpp"
 #include "../QueueManagers/motorsQueueManager.hpp"
+#include "../Settings/settings.hpp"
 
 // Blinky Task
 #define BLINKY_TASKNAME "blinky"
@@ -38,8 +39,22 @@ struct MotorsTaskParams
     Input *directionSwitch;
     MotorRelays *motorRelays;
     MotorsQueueManager *motorsQueueManager;
+    Settings *settings;
 };
 
 void motorsTask(void *parameters);
 void testMotors(MotorRelays *motorRelays);
-void ringMotors(MotorRelays *motors, Input *directionSwitch);
+void ringMotors(MotorRelays *motors, Input *directionSwitch, Settings *settings);
+
+// Direction Switch Task
+#define DIRECTION_SWITCH_TASKNAME "directionSwitch"
+#define DIRECTION_SWITCH_HEAPSIZE 1024
+#define DIRECTION_SWITCH_CORE 1
+#define DIRECTION_SWITCH_PRIORITY 1
+
+void directionSwitchTask(void *parameters);
+
+struct DirectionSwitchTaskParams
+{
+    Input *directionSwitch;
+};

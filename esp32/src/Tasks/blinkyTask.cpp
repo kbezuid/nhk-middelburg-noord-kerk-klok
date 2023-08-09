@@ -2,8 +2,6 @@
 
 void blinkyTask(void *parameters)
 {
-    Serial.println("Blinky task started");
-
     while (true)
     {
         digitalWrite(LED_BUILTIN, LOW);

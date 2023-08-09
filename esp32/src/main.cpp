@@ -4,11 +4,15 @@
 #include "Settings/settings.hpp"
 #include "Commands/commands.hpp"
 
-RfTaskParams rfTaskParams;
-MotorsTaskParams motorsTaskParams;
 MotorsQueueManager *motorsQueueManager = new MotorsQueueManager();
 Settings *settings;
 String command;
+Input *directionSwitch = new Input(MOTORS_DIRECTION_SWITCH_PIN, MOTORS_DIRECTION_SWITCH_DEBOUNCE);
+
+// Task Parameters
+RfTaskParams rfTaskParams;
+MotorsTaskParams motorsTaskParams;
+DirectionSwitchTaskParams directionSwitchTaskParams;
 
 void setup()
 {
@@ -26,13 +30,17 @@ void setup()
   rfTaskParams.rfInput = new Input(RF_INPUT_PIN, RF_INPUT_DEBOUNCE);
   rfTaskParams.motorsQueueManager = motorsQueueManager;
 
-  motorsTaskParams.directionSwitch = new Input(MOTORS_DIRECTION_SWITCH_PIN, MOTORS_DIRECTION_SWITCH_DEBOUNCE);
+  motorsTaskParams.directionSwitch = directionSwitch;
   motorsTaskParams.motorRelays = new MotorRelays(MOTOR_RELAY_A_PIN, MOTOR_RELAY_B_PIN);
   motorsTaskParams.motorsQueueManager = motorsQueueManager;
+  motorsTaskParams.settings = settings;
+
+  directionSwitchTaskParams.directionSwitch = directionSwitch;
 
   // Create Tasks
   xTaskCreatePinnedToCore(blinkyTask, BLINKY_TASKNAME, BLINKY_HEAPSIZE, NULL, BLINKY_PRIORITY, NULL, BLINKY_CORE);
-  // xTaskCreatePinnedToCore(rfTask, RF_TASKNAME, RF_HEAPSIZE, &rfTaskParams, RF_PRIORITY, NULL, RF_CORE);
+  xTaskCreatePinnedToCore(rfTask, RF_TASKNAME, RF_HEAPSIZE, &rfTaskParams, RF_PRIORITY, NULL, RF_CORE);
+  xTaskCreatePinnedToCore(directionSwitchTask, DIRECTION_SWITCH_TASKNAME, DIRECTION_SWITCH_HEAPSIZE, &directionSwitchTaskParams, DIRECTION_SWITCH_PRIORITY, NULL, DIRECTION_SWITCH_CORE);
   xTaskCreatePinnedToCore(motorsTask, MOTORS_TASKNAME, MOTORS_HEAPSIZE, &motorsTaskParams, MOTORS_PRIORITY, NULL, MOTORS_CORE);
 }
 

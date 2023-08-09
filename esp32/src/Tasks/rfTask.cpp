@@ -2,8 +2,6 @@
 
 void rfTask(void *parameters)
 {
-    Serial.println("RF task started");
-
     RfTaskParams *params = (RfTaskParams *)parameters;
 
     while (true)

@@ -2,7 +2,6 @@
 
 void motorsTask(void *parameters)
 {
-    Serial.println("Motors Task Started");
     MotorsTaskParams *params = (MotorsTaskParams *)parameters;
 
     QueueHandle_t motorsInstructions = *params->motorsQueueManager->GetInstructionQueue();
@@ -21,7 +20,7 @@ void motorsTask(void *parameters)
             if (instruction == MotorInstruction::Ring)
             {
                 Serial.println("Ring Instruction Received");
-                ringMotors(params->motorRelays, params->directionSwitch);
+                ringMotors(params->motorRelays, params->directionSwitch, params->settings);
             }
         }
     }
@@ -29,6 +28,7 @@ void motorsTask(void *parameters)
 
 void testMotors(MotorRelays *motorRelays)
 {
+    Serial.println("Testing");
     motorRelays->start(true);
     vTaskDelay(200 / portTICK_PERIOD_MS);
     motorRelays->stop();
@@ -38,24 +38,25 @@ void testMotors(MotorRelays *motorRelays)
     motorRelays->stop();
 }
 
-void ringMotors(MotorRelays *motors, Input *directionSwitch)
+void ringMotors(MotorRelays *motors, Input *directionSwitch, Settings *settings)
 {
+    Serial.println("Ringing");
     uint32_t currentTime = 0;
     uint32_t deltaTime = 0;
     bool currentDirection = false;
-    int tOn = 600;
+    int tOn = settings->Tstartup;
+    int cycles = settings->cycleCount;
 
-    for (int cycle = 0; cycle < 6; cycle++)
+    for (int cycle = 0; cycle < cycles; cycle++)
     {
-        Serial.println(currentDirection);
         currentDirection = directionSwitch->getState();
         deltaTime = 0;
         currentTime = millis();
         motors->start(currentDirection);
 
-        if (cycle == 6)
+        if (cycle == settings->startupCycleCount)
         {
-            tOn = 120;
+            tOn = settings->Tsteady;
         }
 
         while (deltaTime < tOn)
@@ -66,7 +67,6 @@ void ringMotors(MotorRelays *motors, Input *directionSwitch)
         motors->stop();
         currentTime = millis();
 
-        currentDirection = !currentDirection;
         while (directionSwitch->getState() == currentDirection)
         {
             deltaTime = millis() - currentTime;
