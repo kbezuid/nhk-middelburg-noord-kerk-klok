@@ -8,7 +8,7 @@ private:
     ezButton *_input;
 
 public:
-    Input(uint8_t pin, unsigned long debounde);
+    Input(uint8_t pin, unsigned long debounce, int mode = INPUT_PULLDOWN);
     void process();
     void setDebounceTime(unsigned long debounce);
     bool getState();

@@ -1,6 +1,48 @@
 #include "commands.hpp"
 
-void commandHelp()
+Commands::Commands(Settings *settings, MotorsQueueManager *motorsQueueManager)
+{
+    _settings = settings;
+    _motorQueueManager = motorsQueueManager;
+}
+
+void Commands::execute(String command)
+{
+    if (command == CMD_HELP)
+    {
+        commandHelp();
+    }
+    else if (command == CMD_PRINT)
+    {
+        commandPrintSettings();
+    }
+    else if (command == CMD_SAVE)
+    {
+        commandSave();
+    }
+    else if (command == CMD_RESET)
+    {
+        commandReset();
+    }
+    else if (command == CMD_TEST)
+    {
+        commandTest();
+    }
+    else if (command.startsWith(CMD_SET))
+    {
+        commandSet(command);
+    }
+    else if (command.startsWith(CMD_SETH))
+    {
+        commandSettingsHelp();
+    }
+    else
+    {
+        Serial.println("Unknown command");
+    }
+}
+
+void Commands::commandHelp()
 {
     Serial.println("Commands:");
     Serial.println(CMD_PRINT " - print settings");
@@ -11,37 +53,37 @@ void commandHelp()
     Serial.println(CMD_TEST " - test bell motors by moving in both directions");
 }
 
-void commandPrintSettings(Settings *settings)
+void Commands::commandPrintSettings()
 {
     Serial.println("Printing settings...");
-    settings->print();
+    _settings->print();
 }
 
-void commandSave(Settings *settings)
+void Commands::commandSave()
 {
     Serial.println("Saving settings...");
-    settings->persist();
-    settings->print();
+    _settings->persist();
+    _settings->print();
 }
 
-void commandReset(Settings *settings)
+void Commands::commandReset()
 {
     Serial.println("Resetting settings...");
-    settings->read();
-    settings->print();
+    _settings->read();
+    _settings->print();
 }
 
-void commandSettingsHelp(Settings *settings)
+void Commands::commandSettingsHelp()
 {
     Serial.println(CMD_SET " <setting> <value>");
     Serial.println("Settings:");
-    settings->printHelp();
+    _settings->printHelp();
     Serial.println("Example: set " T_STARTUP_CMD_KEY " 1000");
     Serial.println("Multiple settings can be set at once by seperating them with a space");
     Serial.println("Example: set " T_STARTUP_CMD_KEY " 1000 " T_STEADY_CMD_KEY " 400");
 }
 
-void commandSet(String command, Settings *settings)
+void Commands::commandSet(String command)
 {
     Serial.println("Setting settings...");
     command.replace(CMD_SET " ", "");
@@ -74,7 +116,7 @@ void commandSet(String command, Settings *settings)
 
             if (valueStarted)
             {
-                settings->setByCmdKey(currentCmdKey, currentCmdValue);
+                _settings->setByCmdKey(currentCmdKey, currentCmdValue);
                 valueStarted = false;
                 currentCmdKey = "";
                 currentCmdValue = "";
@@ -96,11 +138,11 @@ void commandSet(String command, Settings *settings)
         i++;
     }
 
-    settings->print();
+    _settings->print();
 }
 
-void commandTest(MotorsQueueManager *motorsQueueManager)
+void Commands::commandTest()
 {
     Serial.println("Testing motors...");
-    motorsQueueManager->sendTestInstruction();
+    _motorQueueManager->sendTestInstruction();
 }

@@ -4,7 +4,7 @@
 #define AUTHOR "Kerneels Bezuidenhout"
 #define BUAD_RATE 115200
 
-#define RF_INPUT_PIN 17
+#define RF_INPUT_PIN 2
 #define RF_INPUT_DEBOUNCE 50
 
 #define MOTORS_DIRECTION_SWITCH_PIN 15

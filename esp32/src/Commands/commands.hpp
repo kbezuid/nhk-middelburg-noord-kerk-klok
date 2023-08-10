@@ -12,10 +12,21 @@
 #define CMD_HELP "help"
 #define CMD_TEST "test"
 
-void commandHelp();
-void commandPrintSettings(Settings *settings);
-void commandSave(Settings *settings);
-void commandReset(Settings *settings);
-void commandSettingsHelp(Settings *settings);
-void commandSet(String command, Settings *settings);
-void commandTest(MotorsQueueManager *motorsQueueManager);
+class Commands
+{
+private:
+    Settings *_settings;
+    MotorsQueueManager *_motorQueueManager;
+
+    void commandHelp();
+    void commandPrintSettings();
+    void commandSave();
+    void commandReset();
+    void commandSettingsHelp();
+    void commandSet(String command);
+    void commandTest();
+
+public:
+    Commands(Settings *settings, MotorsQueueManager *motorsQueueManager);
+    void execute(String command);
+};

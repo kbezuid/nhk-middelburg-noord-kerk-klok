@@ -7,7 +7,8 @@
 MotorsQueueManager *motorsQueueManager = new MotorsQueueManager();
 Settings *settings;
 String command;
-Input *directionSwitch = new Input(MOTORS_DIRECTION_SWITCH_PIN, DEFAULT_DIR_SWITCH_DEBOUNCE);
+Input *directionSwitch = new Input(MOTORS_DIRECTION_SWITCH_PIN, DEFAULT_DIR_SWITCH_DEBOUNCE, INPUT_PULLUP);
+Commands *commands;
 
 // Task Parameters
 RfTaskParams rfTaskParams;
@@ -30,6 +31,7 @@ void setup()
   digitalWrite(LED_BUILTIN, HIGH);
 
   settings = new Settings();
+  commands = new Commands(settings, motorsQueueManager);
 
   // Create Task Params
   rfTaskParams.rfInput = new Input(RF_INPUT_PIN, RF_INPUT_DEBOUNCE);
@@ -44,7 +46,7 @@ void setup()
   directionSwitchTaskParams.directionSwitch = directionSwitch;
 
   applySettings();
-  commandHelp();
+  commands->execute(CMD_HELP);
 
   // Create Tasks
   xTaskCreatePinnedToCore(blinkyTask, BLINKY_TASKNAME, BLINKY_HEAPSIZE, NULL, BLINKY_PRIORITY, NULL, BLINKY_CORE);
@@ -60,35 +62,6 @@ void loop()
     command = Serial.readStringUntil('\n');
     command.replace("\r", "");
     command.replace("\n", "");
-
-    if (command.indexOf(CMD_PRINT) >= 0)
-    {
-      commandPrintSettings(settings);
-    }
-    else if (command.indexOf(CMD_SAVE) >= 0)
-    {
-      commandSave(settings);
-    }
-    else if (command.indexOf(CMD_RESET) >= 0)
-    {
-      commandReset(settings);
-    }
-    else if (command.indexOf(CMD_HELP) >= 0)
-    {
-      commandHelp();
-    }
-    else if (command.indexOf(CMD_SETH) >= 0)
-    {
-      commandSettingsHelp(settings);
-    }
-    else if (command.indexOf(CMD_SET) >= 0)
-    {
-      commandSet(command, settings);
-      applySettings();
-    }
-    else
-    {
-      Serial.println("Unknown command. Use 'help' to see available commands.");
-    }
+    commands->execute(command);
   }
 }
