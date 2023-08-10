@@ -16,6 +16,6 @@ void commandHelp();
 void commandPrintSettings(Settings *settings);
 void commandSave(Settings *settings);
 void commandReset(Settings *settings);
-void commandSettingsHelp();
+void commandSettingsHelp(Settings *settings);
 void commandSet(String command, Settings *settings);
 void commandTest(MotorsQueueManager *motorsQueueManager);

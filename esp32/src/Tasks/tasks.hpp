@@ -26,6 +26,7 @@ struct RfTaskParams
 {
     Input *rfInput;
     MotorsQueueManager *motorsQueueManager;
+    Settings *settings;
 };
 
 // Motors Task

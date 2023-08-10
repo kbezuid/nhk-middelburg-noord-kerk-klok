@@ -1,5 +1,7 @@
 #include "tasks.hpp"
 
+#define MINUTE_IN_MS 60000
+
 void rfTask(void *parameters)
 {
     RfTaskParams *params = (RfTaskParams *)parameters;
@@ -12,7 +14,7 @@ void rfTask(void *parameters)
         {
             Serial.println("RF Remote Button Pressed");
             params->motorsQueueManager->sendRingInstruction();
-            vTaskDelay(5000 / portTICK_PERIOD_MS);
+            vTaskDelay(params->settings->rfDebounce * MINUTE_IN_MS / portTICK_PERIOD_MS);
         }
     }
 }

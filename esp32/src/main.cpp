@@ -34,6 +34,7 @@ void setup()
   // Create Task Params
   rfTaskParams.rfInput = new Input(RF_INPUT_PIN, RF_INPUT_DEBOUNCE);
   rfTaskParams.motorsQueueManager = motorsQueueManager;
+  rfTaskParams.settings = settings;
 
   motorsTaskParams.directionSwitch = directionSwitch;
   motorsTaskParams.motorRelays = new MotorRelays(MOTOR_RELAY_A_PIN, MOTOR_RELAY_B_PIN);
@@ -78,7 +79,7 @@ void loop()
     }
     else if (command.indexOf(CMD_SETH) >= 0)
     {
-      commandSettingsHelp();
+      commandSettingsHelp(settings);
     }
     else if (command.indexOf(CMD_SET) >= 0)
     {
