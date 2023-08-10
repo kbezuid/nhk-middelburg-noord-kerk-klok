@@ -77,6 +77,7 @@ void ringMotors(MotorRelays *motors, Input *directionSwitch, Settings *settings)
                 ESP.restart();
             }
         }
-        Serial.println("Ring Complete");
     }
+
+    Serial.println("Ring Complete");
 }

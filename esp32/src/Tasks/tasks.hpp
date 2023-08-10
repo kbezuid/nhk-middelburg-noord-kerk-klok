@@ -14,6 +14,12 @@
 
 void blinkyTask(void *parameters);
 
+struct BlinkyTaskParams
+{
+    Settings *settings;
+    Input *directionSwitch;
+};
+
 // RF Task
 #define RF_TASKNAME "rf"
 #define RF_HEAPSIZE 1024

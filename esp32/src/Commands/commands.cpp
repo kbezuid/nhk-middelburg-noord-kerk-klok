@@ -28,13 +28,13 @@ void Commands::execute(String command)
     {
         commandTest();
     }
-    else if (command.startsWith(CMD_SET))
-    {
-        commandSet(command);
-    }
     else if (command.startsWith(CMD_SETH))
     {
         commandSettingsHelp();
+    }
+    else if (command.startsWith(CMD_SET))
+    {
+        commandSet(command);
     }
     else if (command == CMD_RING)
     {

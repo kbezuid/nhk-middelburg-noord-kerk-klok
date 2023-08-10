@@ -15,6 +15,7 @@ void Settings::read()
     startupCycleCount = _preferences.getInt(STARTUP_CYCLE_COUNT_CMD_KEY, DEFAULT_STARTUP_CYCLE_COUNT);
     directionSwitchDebounce = _preferences.getULong(DIR_SWITCH_DEBOUNCE_CMD_KEY, DEFAULT_DIR_SWITCH_DEBOUNCE);
     rfDebounce = _preferences.getULong(RF_DEBOUNCE_CMD_KEY, DEFAULT_DIR_SWITCH_DEBOUNCE);
+    ledMode = _preferences.getInt(LED_MODE_CMD_KEY, DEFAULT_LED_MODE);
     _preferences.end();
 }
 
@@ -27,6 +28,7 @@ void Settings::persist()
     _preferences.putInt(STARTUP_CYCLE_COUNT_CMD_KEY, startupCycleCount);
     _preferences.putULong(DIR_SWITCH_DEBOUNCE_CMD_KEY, directionSwitchDebounce);
     _preferences.putULong(RF_DEBOUNCE_CMD_KEY, rfDebounce);
+    _preferences.putInt(LED_MODE_CMD_KEY, ledMode);
     _preferences.end();
 }
 
@@ -38,6 +40,7 @@ void Settings::print()
     Serial.println("Cycle Count: (" CYCLE_COUNT_CMD_KEY "): " + String(cycleCount));
     Serial.println("Direction Switch Debounce : (" DIR_SWITCH_DEBOUNCE_CMD_KEY "): " + String(directionSwitchDebounce) + "(ms)");
     Serial.println("RF Remote Debounde : (" RF_DEBOUNCE_CMD_KEY "): " + String(rfDebounce) + "(m)");
+    Serial.println("LED Mode : (" LED_MODE_CMD_KEY "): " + String(ledMode));
 }
 
 void Settings::printHelp()
@@ -48,6 +51,7 @@ void Settings::printHelp()
     Serial.println(CYCLE_COUNT_CMD_KEY " - Number of total cycles");
     Serial.println(DIR_SWITCH_DEBOUNCE_CMD_KEY " - Direction switch debounce time in miliseconds");
     Serial.println(RF_DEBOUNCE_CMD_KEY " - Time in minutes to wait before another ring command will be sent");
+    Serial.println(LED_MODE_CMD_KEY " - Onboard Led mode (0 - blink, 1 - on, 2 - off, 3 - direction)");
 }
 
 void Settings::setByCmdKey(String cmdKey, String value)
@@ -75,6 +79,19 @@ void Settings::setByCmdKey(String cmdKey, String value)
     else if (cmdKey == RF_DEBOUNCE_CMD_KEY)
     {
         rfDebounce = strtol(value.c_str(), NULL, 10);
+    }
+    else if (cmdKey == LED_MODE_CMD_KEY)
+    {
+        int tempLedMode = value.toInt();
+
+        if (tempLedMode > LED_MODE_DIRECTION)
+        {
+            Serial.println("Invalid led mode: " + value);
+        }
+        else
+        {
+            ledMode = tempLedMode;
+        }
     }
     else
     {

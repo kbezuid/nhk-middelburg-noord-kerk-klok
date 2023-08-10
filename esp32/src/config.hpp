@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Settings/settings.hpp"
+
 #define VERSION "0.1.0"
 #define AUTHOR "Kerneels Bezuidenhout"
 #define BUAD_RATE 115200
@@ -17,3 +19,4 @@
 #define DEFAULT_STARTUP_CYCLE_COUNT 10
 #define DEFAULT_DIR_SWITCH_DEBOUNCE 50
 #define DEFAULT_RF_DEBOUNCE 1
+#define DEFAULT_LED_MODE (LED_MODE_BLINK)
