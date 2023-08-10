@@ -1,6 +1,6 @@
 #include "Input.hpp"
 
-Input::Input(uint8_t pin, unsigned long debounce, int mode = INPUT_PULLDOWN)
+Input::Input(uint8_t pin, unsigned long debounce, int mode)
 {
     _input = new ezButton(pin, mode);
     setDebounceTime(debounce);

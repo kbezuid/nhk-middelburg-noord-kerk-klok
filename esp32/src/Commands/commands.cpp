@@ -36,6 +36,10 @@ void Commands::execute(String command)
     {
         commandSettingsHelp();
     }
+    else if (command == CMD_RING)
+    {
+        commandRing();
+    }
     else
     {
         Serial.println("Unknown command");
@@ -45,12 +49,14 @@ void Commands::execute(String command)
 void Commands::commandHelp()
 {
     Serial.println("Commands:");
+    Serial.println(CMD_HELP " - print this help");
     Serial.println(CMD_PRINT " - print settings");
     Serial.println(CMD_SET " - set setting/s");
     Serial.println(CMD_SETH " - help for set command");
     Serial.println(CMD_SAVE " - save settings to memory");
     Serial.println(CMD_RESET " - reset settings to what is saved in memory");
     Serial.println(CMD_TEST " - test bell motors by moving in both directions");
+    Serial.println(CMD_RING " - ring bell");
 }
 
 void Commands::commandPrintSettings()
@@ -145,4 +151,10 @@ void Commands::commandTest()
 {
     Serial.println("Testing motors...");
     _motorQueueManager->sendTestInstruction();
+}
+
+void Commands::commandRing()
+{
+    Serial.println("Ringing bell...");
+    _motorQueueManager->sendRingInstruction();
 }

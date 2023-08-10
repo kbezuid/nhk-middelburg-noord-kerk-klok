@@ -11,6 +11,7 @@
 #define CMD_RESET "reset"
 #define CMD_HELP "help"
 #define CMD_TEST "test"
+#define CMD_RING "ring"
 
 class Commands
 {
@@ -25,6 +26,7 @@ private:
     void commandSettingsHelp();
     void commandSet(String command);
     void commandTest();
+    void commandRing();
 
 public:
     Commands(Settings *settings, MotorsQueueManager *motorsQueueManager);
